@@ -14,3 +14,9 @@ exports.answer = function(req, res) {
                                    respuesta: 'Incorrecto'});
   }
 };
+
+// GET /authors
+exports.author = function(req, res) {
+  res.render('author', {title: 'Autores',
+                        author: 'Jesús Vallejo'});
+};

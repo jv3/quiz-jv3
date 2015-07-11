@@ -1,11 +1,21 @@
 *                     { margin: 0; padding: 0; }
-body                  { font: 16px Georgia, serif; }
+html, body            { font: 16px Georgia, serif; height: 100%;
+                        color: #24313A; background: #24313A;
+                      }
 
-#page-wrap            { margin: 2% auto; color: white; }
-#page-wrap > .main    { border: 1px solid #999; padding: 1%;
-                        margin-bottom: 1px; color: black; }
+#page-wrap            { margin: 2% auto; color: white; height: 65%;}
+#page-wrap > .main    { border: 1px solid #24313A; padding: 1%;
+                        margin-bottom: 1px; color: #24313A;}
 
 section > div         { padding: 20px; }
-header, nav, section,
-footer                { background: #eee; text-align: center; }
-nav span             { margin: 0 10px 0 0; }
+header, nav, section, footer { background: #eee; text-align: center;}
+nav                   { text-align: left; }
+ul li                 { list-style-type: none; display: block;
+                        border-top-style: solid; border-top-width: 1px;
+                        border-top-color: #24313A;}
+ul li:last-child      { border-bottom-style: solid; border-bottom-width: 1px;
+                        border-bottom-color: #24313A;}
+ul li:hover           { background-color: #dde; }
+ul a                  { text-decoration: none; }
+
+.author p              { margin-bottom: 5px; }
