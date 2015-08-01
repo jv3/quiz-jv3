@@ -1,38 +1,49 @@
 // El controlador importa el modelo para poder acceder a DB
-// con los métodos models.Quiz.findAll() o find() buscamos los datos en la tabla.
-
-// Quiz y los procesamos en el callback del método success(..).
-
-// En el ejemplo usamos findAll() para buscar el array de elementos de la tabla
-// Quiz y como solo tiene una pregunta en la tagla, cogemos el primer elementos
-// quiz[0].
+// con los métodos models.Quiz.findAll() o find() buscamos los datos en la tabla
+// Quiz y los procesamos en el callback del método then(..).
 
 var models = require('../models/models.js');
 
+// Para no acceder dos veces a la base de datos: la primera vez cuando accedemos
+// al recurso que muestra la pregunta y la segunda vez cuando se accede al recurso
+// que muestra la respuesta para la pregunta mostrada es correcta, creamos un método
+// load que carga la pregunta y respuesta con un determinado ID
+
+// Autoload - factoriza el código si ruta incluye :quizId
+exports.load = function(req, res, next, quizId) {
+  models.Quiz.findById(quizId).then(
+    function(quiz) {
+      if (quiz) {
+        req.quiz = quiz;  //aqu se guarda el resultado de la consulta, que despues
+        // se usará en 'show' y en 'answer'
+        next(); // saltamos al siguiente middelware
+      } else {
+        next(new Error('No existe quizId=' + quizId));
+      }
+    }).catch(function(error) { next(error); });
+};
+
 // GET /quizes
 exports.index = function(req, res) {
-  models.Quiz.findAll().then(function(quizes) {
-    res.render('quizes/index.ejs', { quizes:quizes });
-  });
+  models.Quiz.findAll().then(
+    function(quizes) {
+      res.render('quizes/index', { quizes:quizes });
+    }
+  ).catch(function(error) { next(error); });
 };
 
 // GET /quizes/:id
 exports.show = function(req, res) {
-  models.Quiz.findById(req.params.quizId).then(function(quiz) {
-    res.render('quizes/show', {title: 'Quiz',
-                                   quiz: quiz});
-  });
+  res.render('quizes/show', { quiz: req.quiz });
 };
 
 // GET /quizes/:id/answer
 exports.answer = function(req, res) {
-  models.Quiz.findById(req.params.quizId).then(function(quiz) {
-    if (req.query.respuesta === quiz.respuesta) {
-      res.render('quizes/answer', { quiz: quiz, respuesta: 'Correcto' });
-    } else {
-      res.render('quizes/answer', { quiz: quiz, respuesta: 'Incorrecto' });
-    }
-  });
+  var resultado = 'Incorrecto';
+  if (req.query.respuesta === req.quiz.respuesta) {
+      resultado = 'Correcto';
+  }
+  res.render('quizes/answer', { quiz: req.quiz, respuesta: resultado });
 };
 
 // GET /authors
