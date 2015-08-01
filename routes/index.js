@@ -9,9 +9,10 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'Quiz' });
 });
 
-router.get('/quizes/question', quizController.question);
-
-router.get('/quizes/answer', quizController.answer);
+// Definición de rutas de /quizes
+router.get('/quizes', quizController.index); // muestra la colección de preguntas. Por convenio REST se llema a este controlador 'index'
+router.get('/quizes/:quizId(\\d+)', quizController.show);
+router.get('/quizes/:quizId(\\d+)/answer', quizController.answer);
 
 router.get('/author', quizController.author);
 

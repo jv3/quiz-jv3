@@ -30,7 +30,8 @@ var sequelize = new Sequelize(DB_name, user, pwd,
 // Importar la definición de la tabla Quiz en quiz.js
 var Quiz = sequelize.import(path.join(__dirname, 'quiz'));
 
-exports.Quiz = Quiz; // exportar definición de la tabla Quiz
+exports.Quiz = Quiz; // exportar definición de la tabla Quiz para poder acceder
+// a los elementos de la tabla desde otras partes de la aplicación
 
 // sequelize.sync() crea e inicializa tabla de preguntas en DB
 // ejecuta el callback del método success cuando se ha sincronizado.
@@ -44,6 +45,10 @@ sequelize.sync({force: true}).then(function() {
         // los campos de la tabla tienen que tener el mismo nombre que las propiedades.
         pregunta: 'Capital de Italia',
         respuesta: 'Roma'
+      });
+      Quiz.create({ // crea un segunda pregunta de la tabla
+        pregunta: 'Capital de Portugal',
+        respuesta: 'Lisboa'
       }).then(function(){console.log('Base de datos inicializada')});
     };
   });
