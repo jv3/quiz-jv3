@@ -24,10 +24,19 @@ exports.load = function(req, res, next, quizId) {
 };
 
 // GET /quizes
-exports.index = function(req, res) {
-  models.Quiz.findAll().then(
-    function(quizes) {
-      res.render('quizes/index', { quizes:quizes });
+exports.index = function(req, res, next) {
+  var search = '%';
+
+  if (req.query.search) {
+    search = '%' + req.query.search + '%';
+    console.log (search)
+    search = search.replace(/ /g, '%'); // busca todos los espacios y los reemplaza
+  }
+
+  models.Quiz.findAll({ where:["pregunta like ?", search],
+                        order:[["pregunta", "ASC"]]
+                      }).then(function(quizes) {
+                              res.render('quizes/index', { quizes: quizes });
     }
   ).catch(function(error) { next(error); });
 };
