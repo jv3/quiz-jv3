@@ -13,12 +13,11 @@ router.get('/', function(req, res) {
 router.param('quizId', quizController.load);
 
 // Definición de rutas de /quizes
-// Busqueda de preguntas
-//router.get('/quizes(/(\?search=([a-zñáéíóú]+))?/ig)', quizController.index);
-
 router.get('/quizes', quizController.index); // muestra la colección de preguntas. Por convenio REST se llema a este controlador 'index'
 router.get('/quizes/:quizId(\\d+)', quizController.show);
 router.get('/quizes/:quizId(\\d+)/answer', quizController.answer);
+router.get('/quizes/new', quizController.new);
+router.post('/quizes/create', quizController.create);
 
 router.get('/author', quizController.author);
 
