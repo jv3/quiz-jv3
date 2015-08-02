@@ -19,3 +19,7 @@ ul li:hover           { background-color: #dde; }
 ul a                  { text-decoration: none; }
 
 .author p              { margin-bottom: 5px; }
+
+/* mensaje de error */
+nav span              { margin: 0 10px 0 0; }
+#ErrorMsgs            { color: #f61; font-size: smaller; }
