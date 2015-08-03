@@ -11,7 +11,6 @@ var models = require('../models/models.js');
 
 // Autoload - factoriza el código si ruta incluye :quizId
 exports.load = function(req, res, next, quizId) {
-    //models.Quiz.findById(quizId).then(
     models.Quiz.findById(quizId).then(
     function(quiz) {
       if (quiz) {
@@ -60,7 +59,7 @@ exports.answer = function(req, res) {
 // GET /quizes/new
 exports.new = function(req, res) {
   var quiz = models.Quiz.build( // crea un objeto quiz
-    {pregunta: "Pregunta", respuesta: "Respuesta"}
+    {pregunta: "Pregunta", respuesta: "Respuesta", tema: "Otro" }
   );
 
   res.render('quizes/new', {quiz: quiz, errors: [] });
@@ -79,7 +78,7 @@ exports.create = function(req, res) {
           res.render('quizes/new', {quiz: quiz, errors: err.errors});
         } else {
           quiz // save: guarda en BD los campos pregunta y respuesta de quiz
-          .save({fields: ["pregunta", "respuesta"]})
+          .save({fields: ["pregunta", "respuesta", "tema"]})
           .then(function(){ res.redirect('/quizes'); }); // Redirección HTTP (URL relativo) lista de preguntas
         }
       }
@@ -97,7 +96,8 @@ exports.edit = function(req, res) {
 exports.update = function (req, res) {
   req.quiz.pregunta = req.body.quiz.pregunta;
   req.quiz.respuesta = req.body.quiz.respuesta;
-
+  req.quiz.tema = req.body.quiz.tema;
+  
   req.quiz
   .validate()
   .then(
@@ -106,7 +106,7 @@ exports.update = function (req, res) {
         res.render('quizes/edit', {quiz: req.quiz, errors: err.errors});
       } else {
         req.quiz  // save: guarda los campos pregunta y respuesta en la BD
-        .save( {fields: ["pregunta", "respuesta"]}) // indicamos especificamente los campos a guardar, así evitamos la inyección de codigo malicioso
+        .save( {fields: ["pregunta", "respuesta", "tema"]}) // indicamos especificamente los campos a guardar, así evitamos la inyección de codigo malicioso
         .then ( function(){ res.redirect('/quizes'); }); // redirección HTTP a la lista de preguntas
       }
     }

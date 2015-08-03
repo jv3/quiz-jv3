@@ -44,11 +44,13 @@ sequelize.sync({force: true}).then(function() {
       Quiz.create({ // crea la primera pregunta de la tabla
         // los campos de la tabla tienen que tener el mismo nombre que las propiedades.
         pregunta: 'Capital de Italia',
-        respuesta: 'Roma'
+        respuesta: 'Roma',
+        tema: 'Humanidades'
       });
       Quiz.create({ // crea un segunda pregunta de la tabla
         pregunta: 'Capital de Portugal',
-        respuesta: 'Lisboa'
+        respuesta: 'Lisboa',
+        tema: 'Humanidades'
       }).then(function(){console.log('Base de datos inicializada')});
     };
   });
