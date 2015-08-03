@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var partials = require('express-partials');
+//var connect = require('connect');
+var methodOverride = require('method-override');
 
 var routes = require('./routes/index'); // importación de modulo de enrutamiento
 
@@ -20,8 +22,14 @@ app.use(partials());
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded());
 app.use(cookieParser());
+// Para hacer uso del método override (se usa en la edición y borrado de preguntas)
+// override with POST having ?_method=DELETE
+//                           ?_method=PUT
+app.use(methodOverride('_method'));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes); // instalación del módulo de enrutamiento
